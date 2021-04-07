@@ -20,46 +20,54 @@ public class BouncingBall implements Runnable {
     private int speed;
     private double speedX;
     private double speedY;
+    private double redColor;
+    private double blueColor;
+    private double greenColor;
+
 
     // Конструктор класса BouncingBall
     public BouncingBall(Field field) {
-// Необходимо иметь ссылку на поле, по которому прыгает мяч,
-// чтобы отслеживать выход за его пределы
+    // Необходимо иметь ссылку на поле, по которому прыгает мяч,
+    // чтобы отслеживать выход за его пределы
         // через getWidth(), getHeight()
         this.field = field;
-// Радиус мяча случайного размера
+    // Радиус мяча случайного размера
         radius = new Double(Math.random() * (MAX_RADIUS -
                 MIN_RADIUS)).intValue() + MIN_RADIUS;
-// Абсолютное значение скорости зависит от диаметра мяча,
-// чем он больше, тем медленнее
+    // Абсолютное значение скорости зависит от диаметра мяча,
+    // чем он больше, тем медленнее
         speed = new Double(Math.round(5 * MAX_SPEED / radius)).intValue();
         if (speed > MAX_SPEED) {
             speed = MAX_SPEED;
         }
-// Начальное направление скорости тоже случайно,
-// угол в пределах от 0 до 2PI
+    // Начальное направление скорости тоже случайно,
+    // угол в пределах от 0 до 2PI
         double angle = Math.random() * 2 * Math.PI;
-// Вычисляются горизонтальная и вертикальная компоненты скорости
+    // Вычисляются горизонтальная и вертикальная компоненты скорости
         speedX = 3 * Math.cos(angle);
         speedY = 3 * Math.sin(angle);
-// Цвет мяча выбирается случайно
-        color = new Color((float) Math.random(), (float) Math.random(),
-                (float) Math.random());
-// Начальное положение мяча случайно
+
+         redColor =  Math.random();
+         greenColor =  Math.random();
+         blueColor =  Math.random();
+
+    // Цвет мяча выбирается случайно
+        color = new Color((float) redColor, (float) greenColor, (float) blueColor);
+    // Начальное положение мяча случайно
         x = Math.random() * (field.getSize().getWidth() - 2 * radius) + radius;
         y = Math.random() * (field.getSize().getHeight() - 2 * radius) + radius;
-// Создаѐм новый экземпляр потока, передавая аргументом
-// ссылку на класс, реализующий Runnable (т.е. на себя)
+    // Создаѐм новый экземпляр потока, передавая аргументом
+    // ссылку на класс, реализующий Runnable (т.е. на себя)
         Thread thisThread = new Thread(this);
-// Запускаем поток
+    // Запускаем поток
         thisThread.start();
     }
     // Метод run() исполняется внутри потока. Когда он завершает работу,
-// то завершается и поток
+    // то завершается и поток
     public void run() {
         try {
-// Крутим бесконечный цикл, т.е. пока нас не прервут,
-// мы не намерены завершаться
+    // Крутим бесконечный цикл, т.е. пока нас не прервут,
+    // мы не намерены завершаться
             while(true) {
 // Синхронизация потоков на самом объекте поля
 // Если движение разрешено - управление будет
@@ -102,7 +110,7 @@ public class BouncingBall implements Runnable {
 // и просто выходим (завершаемся)
         }
     }
-    // Метод прорисовки самого себя
+// Метод прорисовки самого себя
     public void paint(Graphics2D canvas) {
         canvas.setColor(color);
         canvas.setPaint(color);
@@ -110,6 +118,16 @@ public class BouncingBall implements Runnable {
                 2*radius, 2*radius);
         canvas.draw(ball);
         canvas.fill(ball);
+    }
+// Методы для трехцветного спектра
+    public double getRed(){
+        return redColor;
+    }
+    public double getBlue(){
+        return blueColor;
+    }
+    public double getGreen(){
+        return greenColor;
     }
 }
 
